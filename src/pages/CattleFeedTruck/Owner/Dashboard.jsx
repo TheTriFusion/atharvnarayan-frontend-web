@@ -20,10 +20,10 @@ const CattleFeedTruckOwnerDashboard = () => {
         try {
             const token = localStorage.getItem('token');
             const [statsResponse, tripsResponse] = await Promise.all([
-                axios.get('http://localhost:5000/api/cattle-feed-truck/owner/dashboard-stats', {
+                axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/owner/dashboard-stats', {
                     headers: { Authorization: `Bearer ${token}` },
                 }),
-                axios.get('http://localhost:5000/api/cattle-feed-truck/trips', {
+                axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/trips', {
                     headers: { Authorization: `Bearer ${token}` },
                 })
             ]);

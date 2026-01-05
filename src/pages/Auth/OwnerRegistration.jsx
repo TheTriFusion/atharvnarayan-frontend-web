@@ -36,7 +36,7 @@ const OwnerRegistration = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:5000/api/auth/register-owner', {
+            const response = await fetch('http://15.206.212.140:5000/api/auth/register-owner', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

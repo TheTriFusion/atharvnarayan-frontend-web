@@ -1,6 +1,6 @@
 // API utility functions for making requests to backend
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://15.206.212.140:5000/api';
 
 // Request cache to prevent duplicate calls
 const requestCache = new Map();
@@ -87,7 +87,7 @@ const apiRequest = async (endpoint, options = {}) => {
       // Handle network/fetch errors
       if (error.name === 'TypeError' && error.message.includes('fetch')) {
         console.error('Network Error: Backend server may not be running or CORS issue');
-        throw new Error('Cannot connect to server. Please ensure the backend is running on http://localhost:5000');
+        throw new Error('Cannot connect to server. Please ensure the backend is running on http://15.206.212.140:5000');
       }
       console.error('API Error:', error);
       throw error;

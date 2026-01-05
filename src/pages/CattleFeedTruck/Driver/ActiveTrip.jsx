@@ -38,7 +38,7 @@ const ActiveTrip = () => {
                 return;
             }
 
-            const response = await axios.get('http://localhost:5000/api/cattle-feed-truck/trips', {
+            const response = await axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/trips', {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -105,7 +105,7 @@ const ActiveTrip = () => {
             };
 
             const response = await axios.put(
-                `http://localhost:5000/api/cattle-feed-truck/trips/${trip._id}/deliveries/${index}`,
+                `http://15.206.212.140:5000/api/cattle-feed-truck/trips/${trip._id}/deliveries/${index}`,
                 { actualDelivery },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -124,7 +124,7 @@ const ActiveTrip = () => {
                     if (window.confirm('All deliveries completed! Mark trip as finished?')) {
                         try {
                             await axios.put(
-                                `http://localhost:5000/api/cattle-feed-truck/trips/${trip._id}`,
+                                `http://15.206.212.140:5000/api/cattle-feed-truck/trips/${trip._id}`,
                                 { status: 'completed', endTime: new Date() },
                                 { headers: { Authorization: `Bearer ${token}` } }
                             );
@@ -167,7 +167,7 @@ const ActiveTrip = () => {
         try {
             const token = localStorage.getItem('token');
             await axios.put(
-                `http://localhost:5000/api/cattle-feed-truck/trips/${trip._id}`,
+                `http://15.206.212.140:5000/api/cattle-feed-truck/trips/${trip._id}`,
                 { status: 'completed', endTime: new Date() },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

@@ -46,7 +46,7 @@ const CreateTrip = () => {
     const fetchVehicles = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/api/cattle-feed-truck/vehicles', {
+            const response = await axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/vehicles', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setVehicles(Array.isArray(response.data) ? response.data : []);
@@ -106,7 +106,7 @@ const CreateTrip = () => {
             };
 
             await axios.post(
-                'http://localhost:5000/api/cattle-feed-truck/trips',
+                'http://15.206.212.140:5000/api/cattle-feed-truck/trips',
                 payload,
                 { headers: { Authorization: `Bearer ${token}` } }
             );

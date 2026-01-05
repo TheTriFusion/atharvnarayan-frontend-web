@@ -24,7 +24,7 @@ const DeliveryPointManagement = () => {
     const fetchDeliveryPoints = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/api/cattle-feed-truck/delivery-points', {
+            const response = await axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/delivery-points', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setDeliveryPoints(response.data || []);
@@ -41,12 +41,12 @@ const DeliveryPointManagement = () => {
             const token = localStorage.getItem('token');
             if (editingPoint) {
                 await axios.put(
-                    `http://localhost:5000/api/cattle-feed-truck/delivery-points/${editingPoint._id}`,
+                    `http://15.206.212.140:5000/api/cattle-feed-truck/delivery-points/${editingPoint._id}`,
                     formData,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
             } else {
-                await axios.post('http://localhost:5000/api/cattle-feed-truck/delivery-points', formData, {
+                await axios.post('http://15.206.212.140:5000/api/cattle-feed-truck/delivery-points', formData, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
             }
@@ -74,7 +74,7 @@ const DeliveryPointManagement = () => {
         if (!window.confirm('Are you sure?')) return;
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/cattle-feed-truck/delivery-points/${id}`, {
+            await axios.delete(`http://15.206.212.140:5000/api/cattle-feed-truck/delivery-points/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchDeliveryPoints();

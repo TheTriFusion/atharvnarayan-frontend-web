@@ -25,7 +25,7 @@ const FeedProductManagement = () => {
     const fetchProducts = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/api/cattle-feed-truck/feed-products', {
+            const response = await axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/feed-products', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setProducts(response.data || []);
@@ -42,12 +42,12 @@ const FeedProductManagement = () => {
             const token = localStorage.getItem('token');
             if (editingProduct) {
                 await axios.put(
-                    `http://localhost:5000/api/cattle-feed-truck/feed-products/${editingProduct._id}`,
+                    `http://15.206.212.140:5000/api/cattle-feed-truck/feed-products/${editingProduct._id}`,
                     formData,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
             } else {
-                await axios.post('http://localhost:5000/api/cattle-feed-truck/feed-products', formData, {
+                await axios.post('http://15.206.212.140:5000/api/cattle-feed-truck/feed-products', formData, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
             }
@@ -76,7 +76,7 @@ const FeedProductManagement = () => {
         if (!window.confirm('Are you sure?')) return;
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/cattle-feed-truck/feed-products/${id}`, {
+            await axios.delete(`http://15.206.212.140:5000/api/cattle-feed-truck/feed-products/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchProducts();

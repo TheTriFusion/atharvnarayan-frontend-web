@@ -26,7 +26,7 @@ const VehicleManagement = () => {
     const fetchVehicles = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/api/cattle-feed-truck/vehicles', {
+            const response = await axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/vehicles', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setVehicles(response.data || []);
@@ -48,12 +48,12 @@ const VehicleManagement = () => {
 
             if (editingVehicle) {
                 await axios.put(
-                    `http://localhost:5000/api/cattle-feed-truck/vehicles/${editingVehicle._id}`,
+                    `http://15.206.212.140:5000/api/cattle-feed-truck/vehicles/${editingVehicle._id}`,
                     vehicleData,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
             } else {
-                await axios.post('http://localhost:5000/api/cattle-feed-truck/vehicles', vehicleData, {
+                await axios.post('http://15.206.212.140:5000/api/cattle-feed-truck/vehicles', vehicleData, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
             }
@@ -81,7 +81,7 @@ const VehicleManagement = () => {
         if (!window.confirm('Are you sure you want to delete this vehicle?')) return;
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/cattle-feed-truck/vehicles/${id}`, {
+            await axios.delete(`http://15.206.212.140:5000/api/cattle-feed-truck/vehicles/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchVehicles();

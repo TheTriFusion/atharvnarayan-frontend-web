@@ -17,17 +17,17 @@ const ActiveTripRedirect = ({ children }) => {
                     return;
                 }
 
-                const response = await axios.get('http://localhost:5000/api/cattle-feed-truck/trips', {
+                const response = await axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/trips', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
                 const trips = Array.isArray(response.data) ? response.data : [];
                 const userId = user?._id || user?.id;
-                
+
                 const activeTrips = trips.filter(trip => {
                     const driverId = trip.driverId?._id || trip.driverId;
-                    return driverId && userId && driverId.toString() === userId.toString() && 
-                           (trip.status === 'loading' || trip.status === 'in_transit');
+                    return driverId && userId && driverId.toString() === userId.toString() &&
+                        (trip.status === 'loading' || trip.status === 'in_transit');
                 });
 
                 if (activeTrips.length > 0) {
