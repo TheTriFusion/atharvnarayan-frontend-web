@@ -25,7 +25,7 @@ const DriverManagement = () => {
     const fetchDrivers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/drivers', {
+            const response = await axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/drivers', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setDrivers(response.data || []);
@@ -48,7 +48,7 @@ const DriverManagement = () => {
                     delete updateData.password;
                 }
                 await axios.put(
-                    `http://15.206.212.140:5000/api/cattle-feed-truck/drivers/${editingDriver._id}`,
+                    `http://43.204.211.69:5000/api/cattle-feed-truck/drivers/${editingDriver._id}`,
                     updateData,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -60,7 +60,7 @@ const DriverManagement = () => {
                     systemType: 'cattleFeedTruck',
                     password: formData.password || formData.phoneNumber, // Use provided password or default to phone number
                 };
-                await axios.post('http://15.206.212.140:5000/api/cattle-feed-truck/drivers', data, {
+                await axios.post('http://43.204.211.69:5000/api/cattle-feed-truck/drivers', data, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
             }
@@ -89,7 +89,7 @@ const DriverManagement = () => {
         if (!window.confirm('Are you sure you want to delete this driver?')) return;
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://15.206.212.140:5000/api/cattle-feed-truck/drivers/${id}`, {
+            await axios.delete(`http://43.204.211.69:5000/api/cattle-feed-truck/drivers/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchDrivers();

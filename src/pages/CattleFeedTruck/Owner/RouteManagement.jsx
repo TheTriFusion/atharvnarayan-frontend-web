@@ -26,8 +26,8 @@ const RouteManagement = () => {
         try {
             const token = localStorage.getItem('token');
             const [routesRes, pointsRes] = await Promise.all([
-                axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/routes', { headers: { Authorization: `Bearer ${token}` } }),
-                axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/delivery-points', { headers: { Authorization: `Bearer ${token}` } }),
+                axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/routes', { headers: { Authorization: `Bearer ${token}` } }),
+                axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/delivery-points', { headers: { Authorization: `Bearer ${token}` } }),
             ]);
             setRoutes(routesRes.data || []);
             setDeliveryPoints(pointsRes.data || []);
@@ -43,11 +43,11 @@ const RouteManagement = () => {
         try {
             const token = localStorage.getItem('token');
             if (editingRoute) {
-                await axios.put(`http://15.206.212.140:5000/api/cattle-feed-truck/routes/${editingRoute._id}`, formData, {
+                await axios.put(`http://43.204.211.69:5000/api/cattle-feed-truck/routes/${editingRoute._id}`, formData, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
             } else {
-                await axios.post('http://15.206.212.140:5000/api/cattle-feed-truck/routes', formData, {
+                await axios.post('http://43.204.211.69:5000/api/cattle-feed-truck/routes', formData, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
             }
@@ -75,7 +75,7 @@ const RouteManagement = () => {
         if (!window.confirm('Are you sure?')) return;
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://15.206.212.140:5000/api/cattle-feed-truck/routes/${id}`, {
+            await axios.delete(`http://43.204.211.69:5000/api/cattle-feed-truck/routes/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchData();

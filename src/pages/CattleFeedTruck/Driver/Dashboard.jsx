@@ -22,10 +22,10 @@ const CattleFeedTruckDriverDashboard = () => {
             if (!token) return;
 
             const [tripsRes, vehiclesRes] = await Promise.all([
-                axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/trips', {
+                axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/trips', {
                     headers: { Authorization: `Bearer ${token}` },
                 }),
-                axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/vehicles', {
+                axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/vehicles', {
                     headers: { Authorization: `Bearer ${token}` },
                 }),
             ]);
@@ -49,7 +49,7 @@ const CattleFeedTruckDriverDashboard = () => {
         try {
             const token = localStorage.getItem('token');
             await axios.put(
-                `http://15.206.212.140:5000/api/cattle-feed-truck/trips/${tripId}`,
+                `http://43.204.211.69:5000/api/cattle-feed-truck/trips/${tripId}`,
                 { status: 'in_transit' },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

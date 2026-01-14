@@ -17,7 +17,7 @@ const ActiveTripRedirect = ({ children }) => {
                     return;
                 }
 
-                const response = await axios.get('http://15.206.212.140:5000/api/cattle-feed-truck/trips', {
+                const response = await axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/trips', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
