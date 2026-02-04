@@ -33,7 +33,7 @@ const CattleFeedTruckSuperAdminDashboard = () => {
             const headers = { Authorization: `Bearer ${token}` };
 
             // Fetch all owners
-            const ownersResponse = await axios.get('http://43.204.211.69:5000/api/users?role=cattleFeedTruckOwner&systemType=cattleFeedTruck', { headers });
+            const ownersResponse = await axios.get('https://api.thetrifusion.in/api/users?role=cattleFeedTruckOwner&systemType=cattleFeedTruck', { headers });
             const owners = ownersResponse.data.data || [];
 
             let totalDrivers = 0;
@@ -49,12 +49,12 @@ const CattleFeedTruckSuperAdminDashboard = () => {
             // If an owner is selected, fetch their specific data
             if (selectedOwnerId) {
                 const [warehouses, vehicles, deliveryPoints, routes, drivers, trips] = await Promise.all([
-                    axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/warehouses', { headers }),
-                    axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/vehicles', { headers }),
-                    axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/delivery-points', { headers }),
-                    axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/routes', { headers }),
-                    axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/drivers', { headers }),
-                    axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/trips', { headers }),
+                    axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/warehouses', { headers }),
+                    axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/vehicles', { headers }),
+                    axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/delivery-points', { headers }),
+                    axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/routes', { headers }),
+                    axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/drivers', { headers }),
+                    axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/trips', { headers }),
                 ]);
 
                 totalDrivers = drivers.data?.length || 0;

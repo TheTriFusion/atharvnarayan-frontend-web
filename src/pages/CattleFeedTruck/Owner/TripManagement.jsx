@@ -68,9 +68,9 @@ const TripManagement = () => {
         try {
             const token = localStorage.getItem('token');
             const [tripsRes, driversRes, vehiclesRes] = await Promise.all([
-                axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/trips', { headers: { Authorization: `Bearer ${token}` } }),
-                axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/drivers', { headers: { Authorization: `Bearer ${token}` } }),
-                axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/vehicles', { headers: { Authorization: `Bearer ${token}` } }),
+                axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/trips', { headers: { Authorization: `Bearer ${token}` } }),
+                axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/drivers', { headers: { Authorization: `Bearer ${token}` } }),
+                axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/vehicles', { headers: { Authorization: `Bearer ${token}` } }),
             ]);
             const loadedTrips = tripsRes.data || [];
             setTrips(loadedTrips);
@@ -111,7 +111,7 @@ const TripManagement = () => {
                 },
             };
 
-            await axios.post('http://43.204.211.69:5000/api/cattle-feed-truck/trips', tripData, {
+            await axios.post('https://api.thetrifusion.in/api/cattle-feed-truck/trips', tripData, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

@@ -26,7 +26,7 @@ const WarehouseManagement = () => {
     const fetchWarehouses = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/warehouses', {
+            const response = await axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/warehouses', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setWarehouses(response.data || []);
@@ -43,12 +43,12 @@ const WarehouseManagement = () => {
             const token = localStorage.getItem('token');
             if (editingWarehouse) {
                 await axios.put(
-                    `http://43.204.211.69:5000/api/cattle-feed-truck/warehouses/${editingWarehouse._id}`,
+                    `https://api.thetrifusion.in/api/cattle-feed-truck/warehouses/${editingWarehouse._id}`,
                     formData,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
             } else {
-                await axios.post('http://43.204.211.69:5000/api/cattle-feed-truck/warehouses', formData, {
+                await axios.post('https://api.thetrifusion.in/api/cattle-feed-truck/warehouses', formData, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
             }
@@ -76,7 +76,7 @@ const WarehouseManagement = () => {
         if (!window.confirm('Are you sure you want to delete this warehouse?')) return;
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://43.204.211.69:5000/api/cattle-feed-truck/warehouses/${id}`, {
+            await axios.delete(`https://api.thetrifusion.in/api/cattle-feed-truck/warehouses/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchWarehouses();

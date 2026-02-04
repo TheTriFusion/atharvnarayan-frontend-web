@@ -46,7 +46,7 @@ const CreateTrip = () => {
     const fetchVehicles = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/vehicles', {
+            const response = await axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/vehicles', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setVehicles(Array.isArray(response.data) ? response.data : []);
@@ -106,7 +106,7 @@ const CreateTrip = () => {
             };
 
             await axios.post(
-                'http://43.204.211.69:5000/api/cattle-feed-truck/trips',
+                'https://api.thetrifusion.in/api/cattle-feed-truck/trips',
                 payload,
                 { headers: { Authorization: `Bearer ${token}` } }
             );

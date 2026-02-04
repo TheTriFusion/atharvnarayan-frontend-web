@@ -38,7 +38,7 @@ const ActiveTrip = () => {
                 return;
             }
 
-            const response = await axios.get('http://43.204.211.69:5000/api/cattle-feed-truck/trips', {
+            const response = await axios.get('https://api.thetrifusion.in/api/cattle-feed-truck/trips', {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -105,7 +105,7 @@ const ActiveTrip = () => {
             };
 
             const response = await axios.put(
-                `http://43.204.211.69:5000/api/cattle-feed-truck/trips/${trip._id}/deliveries/${index}`,
+                `https://api.thetrifusion.in/api/cattle-feed-truck/trips/${trip._id}/deliveries/${index}`,
                 { actualDelivery },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -124,7 +124,7 @@ const ActiveTrip = () => {
                     if (window.confirm('All deliveries completed! Mark trip as finished?')) {
                         try {
                             await axios.put(
-                                `http://43.204.211.69:5000/api/cattle-feed-truck/trips/${trip._id}`,
+                                `https://api.thetrifusion.in/api/cattle-feed-truck/trips/${trip._id}`,
                                 { status: 'completed', endTime: new Date() },
                                 { headers: { Authorization: `Bearer ${token}` } }
                             );
@@ -167,7 +167,7 @@ const ActiveTrip = () => {
         try {
             const token = localStorage.getItem('token');
             await axios.put(
-                `http://43.204.211.69:5000/api/cattle-feed-truck/trips/${trip._id}`,
+                `https://api.thetrifusion.in/api/cattle-feed-truck/trips/${trip._id}`,
                 { status: 'completed', endTime: new Date() },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
