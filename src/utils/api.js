@@ -266,6 +266,19 @@ export const milkTruckAPI = {
   updatePricing: (data) => apiRequest('/milk-truck/pricing', { method: 'PUT', body: data }),
 };
 
+// Cattle Feed Truck API
+const CATTLE_FEED_TRUCK_BASE = '/cattle-feed-truck';
+export const cattleFeedTruckAPI = {
+  getTrips: (ownerId = null) => {
+    const url = ownerId ? `${CATTLE_FEED_TRUCK_BASE}/trips?ownerId=${ownerId}` : `${CATTLE_FEED_TRUCK_BASE}/trips`;
+    return apiRequest(url);
+  },
+  getTrip: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/trips/${id}`),
+};
+
+// Socket URL (same host as API, no /api path)
+export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/api\/?$/, '') : 'https://api.thetrifusion.in');
+
 // Users API
 export const usersAPI = {
   getUsers: (params = {}, ownerId = null) => {

@@ -177,7 +177,8 @@ const TripDetailsModal = ({ trip, onClose, onUpdate, bmcs = [], routes = [], veh
                                                 <th rowSpan="2" className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase border-r">BMC Name</th>
                                                 <th colSpan="3" className="px-4 py-2 text-center text-xs font-medium text-green-700 uppercase bg-green-50 border-r">At BMC (Original)</th>
                                                 <th colSpan="3" className="px-4 py-2 text-center text-xs font-medium text-purple-700 uppercase bg-purple-50 border-r">At Dairy (Verified)</th>
-                                                <th colSpan="5" className="px-4 py-2 text-center text-xs font-medium text-gray-600 uppercase">Variance</th>
+                                                <th colSpan="5" className="px-4 py-2 text-center text-xs font-medium text-gray-600 uppercase border-r">Variance</th>
+                                                <th className="px-4 py-2 text-center text-xs font-medium text-gray-600 uppercase">Proof</th>
                                             </tr>
                                             <tr>
                                                 <th className="px-3 py-2 text-center text-xs font-medium text-gray-500 bg-green-50">Milk (L)</th>
@@ -190,7 +191,8 @@ const TripDetailsModal = ({ trip, onClose, onUpdate, bmcs = [], routes = [], veh
                                                 <th className="px-3 py-2 text-center text-xs font-medium text-gray-500">Fat %</th>
                                                 <th className="px-3 py-2 text-center text-xs font-medium text-gray-500">Fat (kg)</th>
                                                 <th className="px-3 py-2 text-center text-xs font-medium text-gray-500">SNF %</th>
-                                                <th className="px-3 py-2 text-center text-xs font-medium text-gray-500">SNF (kg)</th>
+                                                <th className="px-3 py-2 text-center text-xs font-medium text-gray-500 border-r">SNF (kg)</th>
+                                                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500">Image</th>
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
@@ -235,8 +237,27 @@ const TripDetailsModal = ({ trip, onClose, onUpdate, bmcs = [], routes = [], veh
                                                         <td className={`px-3 py-3 text-sm font-semibold text-center ${snfVar < 0 ? 'text-red-600' : snfVar > 0 ? 'text-green-600' : 'text-gray-600'}`}>
                                                             {snfVar !== 0 ? (snfVar > 0 ? '+' : '') + snfVar.toFixed(2) : '0.00'}
                                                         </td>
-                                                        <td className={`px-3 py-3 text-sm font-semibold text-center ${snfKgVar < 0 ? 'text-red-600' : snfKgVar > 0 ? 'text-green-600' : 'text-gray-600'}`}>
+                                                        <td className={`px-3 py-3 text-sm font-semibold text-center border-r ${snfKgVar < 0 ? 'text-red-600' : snfKgVar > 0 ? 'text-green-600' : 'text-gray-600'}`}>
                                                             {snfKgVar !== 0 ? (snfKgVar > 0 ? '+' : '') + snfKgVar.toFixed(2) : '0.00'}
+                                                        </td>
+                                                        <td className="px-4 py-3 text-center">
+                                                            {entry.collectionData?.image ? (
+                                                                <a
+                                                                    href={`https://api.thetrifusion.in${entry.collectionData.image}`}
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                    className="group relative inline-block"
+                                                                >
+                                                                    <img
+                                                                        src={`https://api.thetrifusion.in${entry.collectionData.image}`}
+                                                                        alt="Proof"
+                                                                        className="w-10 h-10 rounded border border-gray-200 object-cover hover:scale-110 transition-transform"
+                                                                    />
+                                                                    <span className="invisible group-hover:visible absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded whitespace-nowrap z-10">View Image</span>
+                                                                </a>
+                                                            ) : (
+                                                                <span className="text-gray-300 text-xs">-</span>
+                                                            )}
                                                         </td>
                                                     </tr>
                                                 );
@@ -284,9 +305,10 @@ const TripDetailsModal = ({ trip, onClose, onUpdate, bmcs = [], routes = [], veh
                                                         <td className="px-3 py-3 text-sm text-center text-gray-500">
                                                             -
                                                         </td>
-                                                        <td className={`px-3 py-3 text-sm font-bold text-center ${totalVariances.snfKgVar < 0 ? 'text-red-700' : totalVariances.snfKgVar > 0 ? 'text-green-700' : 'text-gray-700'}`}>
+                                                        <td className={`px-3 py-3 text-sm font-bold text-center border-r ${totalVariances.snfKgVar < 0 ? 'text-red-700' : totalVariances.snfKgVar > 0 ? 'text-green-700' : 'text-gray-700'}`}>
                                                             {totalVariances.snfKgVar !== 0 ? (totalVariances.snfKgVar > 0 ? '+' : '') + totalVariances.snfKgVar.toFixed(2) + ' kg' : '0.00 kg'}
                                                         </td>
+                                                        <td className="bg-gray-100"></td>
                                                     </tr>
                                                 );
                                             })()}

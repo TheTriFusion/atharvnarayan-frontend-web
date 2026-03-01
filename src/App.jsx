@@ -10,6 +10,7 @@ import OwnerRegistration from './pages/Auth/OwnerRegistration';
 // Super Admin Pages
 import SuperAdminDashboard from './pages/SuperAdmin/Dashboard';
 import SuperAdminOwnerManagement from './pages/SuperAdmin/OwnerManagement';
+import SuperAdminTripsWithMap from './pages/SuperAdmin/TripsWithMap';
 
 // Cattle Feed Owner Pages
 import CattleFeedOwnerDashboard from './pages/CattleFeed/Owner/Dashboard';
@@ -82,6 +83,14 @@ function App() {
                   element={
                     <ProtectedRoute requiredRole="superadmin">
                       <SuperAdminOwnerManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/superadmin/trips-map"
+                  element={
+                    <ProtectedRoute requiredRole="superadmin">
+                      <SuperAdminTripsWithMap />
                     </ProtectedRoute>
                   }
                 />

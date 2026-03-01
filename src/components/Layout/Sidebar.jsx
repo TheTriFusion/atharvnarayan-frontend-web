@@ -12,6 +12,7 @@ const Sidebar = () => {
   const superAdminMenuItems = [
     { path: '/superadmin/dashboard', labelKey: 'superAdmin.title', section: 'superadmin' },
     { path: '/superadmin/owners', labelKey: 'superAdmin.ownerManagement', section: 'superadmin' },
+    { path: '/superadmin/trips-map', labelKey: 'superAdmin.tripsWithMap', section: 'superadmin' },
     { path: '/cattle-feed/owner/dashboard', labelKey: 'cattleFeed.dashboard', section: 'cattleFeed' },
     { path: '/cattle-feed/owner/inventory', labelKey: 'cattleFeed.inventory', section: 'cattleFeed' },
     { path: '/cattle-feed/owner/sales', labelKey: 'cattleFeed.sales', section: 'cattleFeed' },

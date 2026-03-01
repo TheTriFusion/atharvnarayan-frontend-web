@@ -21,6 +21,8 @@ const OwnerRegistration = () => {
         registrationNumber: '',
         gstNumber: '',
     });
+    const [profileImage, setProfileImage] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -30,18 +32,31 @@ const OwnerRegistration = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProfileImage(file);
+            setPreviewUrl(URL.createObjectURL(file));
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
         try {
+            const fd = new FormData();
+            Object.keys(formData).forEach(key => {
+                fd.append(key, formData[key]);
+            });
+            if (profileImage) {
+                fd.append('image', profileImage);
+            }
+
             const response = await fetch('https://api.thetrifusion.in/api/auth/register-owner', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+                body: fd
             });
 
             const data = await response.json();
@@ -245,6 +260,37 @@ const OwnerRegistration = () => {
                                     value={formData.gstNumber}
                                     onChange={handleChange}
                                 />
+                            </div>
+                            <div className="mt-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Profile / Shop Image *
+                                </label>
+                                <div className="flex items-center space-x-6">
+                                    <div className="flex-shrink-0 h-24 w-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden bg-gray-50">
+                                        {previewUrl ? (
+                                            <img src={previewUrl} alt="Preview" className="h-full w-full object-cover" />
+                                        ) : (
+                                            <span className="text-gray-400 text-xs text-center px-1">No image selected</span>
+                                        )}
+                                    </div>
+                                    <div className="flex-1">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleFileChange}
+                                            className="block w-full text-sm text-gray-500
+                                                    file:mr-4 file:py-2 file:px-4
+                                                    file:rounded-full file:border-0
+                                                    file:text-sm file:font-semibold
+                                                    file:bg-blue-50 file:text-blue-700
+                                                    hover:file:bg-blue-100"
+                                            required
+                                        />
+                                        <p className="mt-1 text-xs text-gray-500">
+                                            Verification proof for Super Admin (JPG, PNG or WebP)
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

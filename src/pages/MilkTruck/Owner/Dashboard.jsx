@@ -331,6 +331,7 @@ const Dashboard = () => {
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Collected</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Dairy Rec.</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Variance</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">KM</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">BMCs</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
@@ -344,6 +345,7 @@ const Dashboard = () => {
                   const collected = trip.dairyConfirmation?.collectionTotals?.milk || trip.summary?.totalMilk || 0;
                   const dairy = trip.dairyConfirmation?.totalMilkQuantity || trip.summary?.totalMilk || 0;
                   const diff = trip.dairyConfirmation?.variance?.milk || (dairy - collected);
+                  const distance = trip.summary?.totalDistance || 0;
                   const bmcCount = trip.bmcEntries?.length || 0;
 
                   const tripId = trip.id || trip._id || `trip-${Math.random()}`;
@@ -369,6 +371,9 @@ const Dashboard = () => {
                       </td>
                       <td className={`px-4 py-3 text-sm text-right font-medium ${diff < 0 ? 'text-red-600' : diff > 0 ? 'text-green-600' : 'text-gray-400'}`}>
                         {diff > 0 ? '+' : ''}{diff !== 0 ? diff.toFixed(2) : '-'} L
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900 text-right font-medium">
+                        {distance.toFixed(1)} km
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-600 text-right">
                         {bmcCount} BMC{bmcCount !== 1 ? 's' : ''}

@@ -191,6 +191,7 @@ const CattleFeedOwnerManagement = () => {
                 <th className="px-4 py-3 text-left font-medium text-gray-500">Name</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-500">Phone</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-500">Status</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-500">Proof</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-500">Actions</th>
               </tr>
             </thead>
@@ -208,6 +209,20 @@ const CattleFeedOwnerManagement = () => {
                         {owner.onboardingStatus || (owner.isActive ? 'Active' : 'Inactive')}
                       </span>
                     </td>
+                    <td className="px-4 py-3">
+                      {owner.profileImage ? (
+                        <a
+                          href={`https://api.thetrifusion.in${owner.profileImage}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-blue-600 hover:underline text-xs"
+                        >
+                          View Image
+                        </a>
+                      ) : (
+                        <span className="text-gray-400 text-xs">No Image</span>
+                      )}
+                    </td>
                     <td className="px-4 py-3 flex gap-2">
                       {activeTab === 'pending' && (
                         <Button variant="success" className="px-2 py-1 text-xs" onClick={() => handleApprove(owner)}>Approve</Button>
@@ -221,8 +236,8 @@ const CattleFeedOwnerManagement = () => {
             </tbody>
           </table>
         </div>
-      </Card>
-    </div>
+      </Card >
+    </div >
   );
 };
 

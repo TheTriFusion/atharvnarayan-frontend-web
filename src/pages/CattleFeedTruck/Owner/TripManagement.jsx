@@ -314,7 +314,8 @@ const TripManagement = () => {
                                 <tr>
                                     <th className="px-6 py-4 text-left">Date & Time</th>
                                     <th className="px-6 py-4 text-left">Driver & Vehicle</th>
-                                    <th className="px-6 py-4 text-left">Route Ino</th>
+                                    <th className="px-6 py-4 text-left">Route Info</th>
+                                    <th className="px-6 py-4 text-left">KM</th>
                                     <th className="px-6 py-4 text-left">Progress</th>
                                     <th className="px-6 py-4 text-left">Status</th>
                                     <th className="px-6 py-4 text-right">Actions</th>
@@ -323,7 +324,7 @@ const TripManagement = () => {
                             <tbody className="divide-y divide-gray-50 bg-white">
                                 {filteredTrips.length === 0 ? (
                                     <tr>
-                                        <td colSpan="6" className="text-center py-12 text-gray-400">
+                                        <td colSpan="7" className="text-center py-12 text-gray-400">
                                             <div className="flex flex-col items-center">
                                                 <span className="text-4xl mb-3 opacity-20">🚚</span>
                                                 <p>No trips found{filter !== 'all' ? ` for "${filter}" status` : ''}.</p>
@@ -335,6 +336,7 @@ const TripManagement = () => {
                                         const deliveredBags = calculateDeliveredBags(trip);
                                         const totalBags = getTotalBags(trip);
                                         const deliveryCount = trip.deliveryEntries?.length || 0;
+                                        const totalKm = trip.summary?.totalKm || trip.tripDetails?.distance || 0;
                                         const isExpanded = expandedTrips.has(trip._id);
                                         const progressPercent = totalBags > 0 ? (deliveredBags / totalBags) * 100 : 0;
 
@@ -372,6 +374,11 @@ const TripManagement = () => {
                                                         </div>
                                                         <div className="text-xs text-gray-500 mt-1">
                                                             {deliveryCount} stop{deliveryCount !== 1 ? 's' : ''}
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        <div className="text-sm font-semibold text-gray-800">
+                                                            {totalKm.toFixed(1)} km
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 w-48">
