@@ -6,6 +6,26 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.thetrifusion.i
 const requestCache = new Map();
 const pendingRequests = new Map();
 
+// Generate full image URL from relative path
+export const getImageUrl = (path) => {
+  if (!path) return null;
+  if (path.startsWith('http')) return path;
+
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+
+  // If API_BASE_URL has /api at the end, remove it for the image URL
+  const baseUrlParts = API_BASE_URL.split('/');
+  if (baseUrlParts[baseUrlParts.length - 1] === 'api') {
+    baseUrlParts.pop();
+  }
+  const rootUrl = baseUrlParts.join('/');
+
+  if (cleanPath.startsWith('/uploads')) {
+    return `${rootUrl}${cleanPath}`;
+  }
+  return `${rootUrl}/uploads${cleanPath}`;
+};
+
 // Get JWT token from localStorage
 const getToken = () => {
   return localStorage.getItem('token');
@@ -31,24 +51,28 @@ const apiRequest = async (endpoint, options = {}) => {
   const token = getToken();
   const url = `${API_BASE_URL}${endpoint}`;
 
+  const isFormData = options.body instanceof FormData;
+
   // Create a unique key for this request
-  const requestKey = `${options.method || 'GET'}:${url}:${JSON.stringify(options.body || {})}`;
+  const requestKey = `${options.method || 'GET'}:${url}:${isFormData ? 'formdata' : JSON.stringify(options.body || {})}`;
 
   // If there's a pending request with the same key, return it
   if (pendingRequests.has(requestKey)) {
     return pendingRequests.get(requestKey);
   }
 
+  const { headers: customHeaders, ...restOptions } = options;
+
   const config = {
+    ...restOptions,
     headers: {
-      'Content-Type': 'application/json',
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
+      ...customHeaders,
     },
-    ...options,
   };
 
-  if (config.body && typeof config.body === 'object') {
+  if (!isFormData && config.body && typeof config.body === 'object') {
     config.body = JSON.stringify(config.body);
   }
 

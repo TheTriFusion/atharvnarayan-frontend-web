@@ -11,6 +11,7 @@ import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import Modal from '../../components/common/Modal';
+import { getImageUrl } from '../../utils/api';
 
 const CattleFeedTruckOwnerManagement = () => {
     const [activeTab, setActiveTab] = useState('active'); // 'active' or 'pending'
@@ -204,7 +205,7 @@ const CattleFeedTruckOwnerManagement = () => {
                                         <td className="px-4 py-3">
                                             {owner.profileImage ? (
                                                 <a
-                                                    href={`https://api.thetrifusion.in${owner.profileImage}`}
+                                                    href={getImageUrl(owner.profileImage)}
                                                     target="_blank"
                                                     rel="noreferrer"
                                                     className="text-blue-600 hover:underline text-xs"

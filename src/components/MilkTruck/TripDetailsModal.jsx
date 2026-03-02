@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Button from '../common/Button';
 import { deleteMilkTruckTrip } from '../../utils/storage';
 import { useAuth } from '../../contexts/AuthContext';
+import { getImageUrl } from '../../utils/api';
 
 const TripDetailsModal = ({ trip, onClose, onUpdate, bmcs = [], routes = [], vehicles = [] }) => {
     const { user } = useAuth();
@@ -243,13 +244,13 @@ const TripDetailsModal = ({ trip, onClose, onUpdate, bmcs = [], routes = [], veh
                                                         <td className="px-4 py-3 text-center">
                                                             {entry.collectionData?.image ? (
                                                                 <a
-                                                                    href={`https://api.thetrifusion.in${entry.collectionData.image}`}
+                                                                    href={getImageUrl(entry.collectionData.image)}
                                                                     target="_blank"
                                                                     rel="noreferrer"
                                                                     className="group relative inline-block"
                                                                 >
                                                                     <img
-                                                                        src={`https://api.thetrifusion.in${entry.collectionData.image}`}
+                                                                        src={getImageUrl(entry.collectionData.image)}
                                                                         alt="Proof"
                                                                         className="w-10 h-10 rounded border border-gray-200 object-cover hover:scale-110 transition-transform"
                                                                     />
