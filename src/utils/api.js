@@ -293,11 +293,77 @@ export const milkTruckAPI = {
 // Cattle Feed Truck API
 const CATTLE_FEED_TRUCK_BASE = '/cattle-feed-truck';
 export const cattleFeedTruckAPI = {
+  // Trips
   getTrips: (ownerId = null) => {
     const url = ownerId ? `${CATTLE_FEED_TRUCK_BASE}/trips?ownerId=${ownerId}` : `${CATTLE_FEED_TRUCK_BASE}/trips`;
     return apiRequest(url);
   },
   getTrip: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/trips/${id}`),
+  createTrip: (data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/trips`, { method: 'POST', body: data }),
+  updateTrip: (id, data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/trips/${id}`, { method: 'PUT', body: data }),
+  deleteTrip: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/trips/${id}`, { method: 'DELETE' }),
+
+  // Vehicles
+  getVehicles: (ownerId = null) => {
+    const url = ownerId ? `${CATTLE_FEED_TRUCK_BASE}/vehicles?ownerId=${ownerId}` : `${CATTLE_FEED_TRUCK_BASE}/vehicles`;
+    return apiRequest(url);
+  },
+  getVehicle: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/vehicles/${id}`),
+  createVehicle: (data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/vehicles`, { method: 'POST', body: data }),
+  updateVehicle: (id, data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/vehicles/${id}`, { method: 'PUT', body: data }),
+  deleteVehicle: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/vehicles/${id}`, { method: 'DELETE' }),
+
+  // Drivers
+  getDrivers: (ownerId = null) => {
+    const url = ownerId ? `${CATTLE_FEED_TRUCK_BASE}/drivers?ownerId=${ownerId}` : `${CATTLE_FEED_TRUCK_BASE}/drivers`;
+    return apiRequest(url);
+  },
+  getDriver: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/drivers/${id}`),
+  createDriver: (data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/drivers`, { method: 'POST', body: data }),
+  updateDriver: (id, data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/drivers/${id}`, { method: 'PUT', body: data }),
+  deleteDriver: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/drivers/${id}`, { method: 'DELETE' }),
+
+  // Routes
+  getRoutes: (ownerId = null) => {
+    const url = ownerId ? `${CATTLE_FEED_TRUCK_BASE}/routes?ownerId=${ownerId}` : `${CATTLE_FEED_TRUCK_BASE}/routes`;
+    return apiRequest(url);
+  },
+  getRoute: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/routes/${id}`),
+  createRoute: (data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/routes`, { method: 'POST', body: data }),
+  updateRoute: (id, data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/routes/${id}`, { method: 'PUT', body: data }),
+  deleteRoute: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/routes/${id}`, { method: 'DELETE' }),
+
+  // Warehouses
+  getWarehouses: (ownerId = null) => {
+    const url = ownerId ? `${CATTLE_FEED_TRUCK_BASE}/warehouses?ownerId=${ownerId}` : `${CATTLE_FEED_TRUCK_BASE}/warehouses`;
+    return apiRequest(url);
+  },
+  createWarehouse: (data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/warehouses`, { method: 'POST', body: data }),
+  updateWarehouse: (id, data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/warehouses/${id}`, { method: 'PUT', body: data }),
+  deleteWarehouse: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/warehouses/${id}`, { method: 'DELETE' }),
+
+  // Delivery Points
+  getDeliveryPoints: (ownerId = null) => {
+    const url = ownerId ? `${CATTLE_FEED_TRUCK_BASE}/delivery-points?ownerId=${ownerId}` : `${CATTLE_FEED_TRUCK_BASE}/delivery-points`;
+    return apiRequest(url);
+  },
+  createDeliveryPoint: (data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/delivery-points`, { method: 'POST', body: data }),
+  updateDeliveryPoint: (id, data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/delivery-points/${id}`, { method: 'PUT', body: data }),
+  deleteDeliveryPoint: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/delivery-points/${id}`, { method: 'DELETE' }),
+
+  // Feed Products
+  getFeedProducts: (ownerId = null) => {
+    const url = ownerId ? `${CATTLE_FEED_TRUCK_BASE}/feed-products?ownerId=${ownerId}` : `${CATTLE_FEED_TRUCK_BASE}/feed-products`;
+    return apiRequest(url);
+  },
+  createFeedProduct: (data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/feed-products`, { method: 'POST', body: data }),
+  updateFeedProduct: (id, data) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/feed-products/${id}`, { method: 'PUT', body: data }),
+  deleteFeedProduct: (id) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/feed-products/${id}`, { method: 'DELETE' }),
+
+  // Location (for trip tracking)
+  sendTripLocation: (tripId, latitude, longitude) => apiRequest(`${CATTLE_FEED_TRUCK_BASE}/trips/${tripId}/location`, {
+    method: 'POST', body: { latitude, longitude }
+  }),
 };
 
 // Socket URL (same host as API, no /api path)
@@ -318,4 +384,41 @@ export const usersAPI = {
   createUser: (data) => apiRequest('/users', { method: 'POST', body: data }),
   updateUser: (id, data) => apiRequest(`/users/${id}`, { method: 'PUT', body: data }),
   deleteUser: (id) => apiRequest(`/users/${id}`, { method: 'DELETE' }),
+};
+
+// Documents API
+export const documentsAPI = {
+  // Upload a document (multipart/form-data)
+  upload: async (file, metadata = {}) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    Object.entries(metadata).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, typeof value === 'object' ? JSON.stringify(value) : value);
+      }
+    });
+    return apiRequest('/documents/upload', { method: 'POST', body: formData });
+  },
+
+  // Get all documents (optionally filtered)
+  getDocuments: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return apiRequest(`/documents${queryString ? `?${queryString}` : ''}`);
+  },
+
+  // Get single document
+  getDocument: (id) => apiRequest(`/documents/${id}`),
+
+  // Delete document
+  deleteDocument: (id) => apiRequest(`/documents/${id}`, { method: 'DELETE' }),
+};
+
+// GPS / Fleet Tracking API
+export const gpsAPI = {
+  updateUserLocation: (latitude, longitude) =>
+    apiRequest('/gps/location', { method: 'POST', body: { latitude, longitude } }),
+  getFleetStatus: (ownerId = null) => {
+    const url = ownerId ? `/gps/fleet?ownerId=${ownerId}` : '/gps/fleet';
+    return apiRequest(url);
+  },
 };

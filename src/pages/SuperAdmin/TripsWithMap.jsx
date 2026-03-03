@@ -198,41 +198,39 @@ export default function TripsWithMap() {
             <ul className="space-y-2 max-h-[320px] overflow-y-auto">
               {tab === 'live'
                 ? activeTrips.map((t) => (
-                    <li key={t._id}>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedTrip(t)}
-                        className={`w-full text-left px-3 py-2 rounded-lg border transition-colors ${
-                          selectedTrip?._id === t._id
-                            ? 'bg-blue-50 border-blue-300 text-blue-800'
-                            : 'border-gray-200 hover:bg-gray-50'
+                  <li key={t._id}>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedTrip(t)}
+                      className={`w-full text-left px-3 py-2 rounded-lg border transition-colors ${selectedTrip?._id === t._id
+                          ? 'bg-blue-50 border-blue-300 text-blue-800'
+                          : 'border-gray-200 hover:bg-gray-50'
                         }`}
-                      >
-                        <span className="font-medium block">
-                          {t.driverId?.name || 'Driver'} – {t.from || 'From'} → {t.to || 'To'}
-                        </span>
-                        <span className="text-xs text-gray-500">{t.status}</span>
-                      </button>
-                    </li>
-                  ))
+                    >
+                      <span className="font-medium block">
+                        {t.driverId?.name || 'Driver'} – {t.from || 'From'} → {t.to || 'To'}
+                      </span>
+                      <span className="text-xs text-gray-500">{t.status}</span>
+                    </button>
+                  </li>
+                ))
                 : trips.map((t) => (
-                    <li key={t._id}>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedTrip(t)}
-                        className={`w-full text-left px-3 py-2 rounded-lg border transition-colors ${
-                          selectedTrip?._id === t._id
-                            ? 'bg-blue-50 border-blue-300 text-blue-800'
-                            : 'border-gray-200 hover:bg-gray-50'
+                  <li key={t._id}>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedTrip(t)}
+                      className={`w-full text-left px-3 py-2 rounded-lg border transition-colors ${selectedTrip?._id === t._id
+                          ? 'bg-blue-50 border-blue-300 text-blue-800'
+                          : 'border-gray-200 hover:bg-gray-50'
                         }`}
-                      >
-                        <span className="font-medium block">
-                          {t.driverId?.name || 'Driver'} – {t.from || t.routeId?.name || 'Trip'}
-                        </span>
-                        <span className="text-xs text-gray-500">{t.status}</span>
-                      </button>
-                    </li>
-                  ))}
+                    >
+                      <span className="font-medium block">
+                        {t.driverId?.name || 'Driver'} – {t.from || t.routeId?.name || 'Trip'}
+                      </span>
+                      <span className="text-xs text-gray-500">{t.status}</span>
+                    </button>
+                  </li>
+                ))}
             </ul>
           </Card>
         </div>
@@ -262,6 +260,8 @@ export default function TripsWithMap() {
                   coordinates={coordinates}
                   height={400}
                   showFitBounds={true}
+                  isLive={tab === 'live' && isLiveActive}
+                  driverName={selectedTrip.driverId?.name || 'Driver'}
                 />
               </>
             )}

@@ -7,6 +7,8 @@ import Input from '../../../components/common/Input';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useOwner } from '../../../contexts/OwnerContext';
 import OwnerSelector from '../../../components/SuperAdmin/OwnerSelector';
+import { UserDocumentsSection } from '../../../components/common/DocViewer';
+import { getImageUrl } from '../../../utils/api';
 
 const DriverManagement = () => {
   const { isSuperAdmin } = useAuth();
@@ -17,6 +19,7 @@ const DriverManagement = () => {
   const [trips, setTrips] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingDriver, setEditingDriver] = useState(null);
+  const [viewDriver, setViewDriver] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     licenseNumber: '',
@@ -81,19 +84,19 @@ const DriverManagement = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const driverData = {
       ...formData,
       assignedVehicles: selectedVehicles,
     };
-    
+
     try {
       if (editingDriver) {
         await updateMilkTruckDriver(editingDriver._id || editingDriver.id, driverData);
       } else {
         await addMilkTruckDriver(driverData);
       }
-      
+
       resetForm();
       await loadData();
     } catch (error) {
@@ -136,7 +139,7 @@ const DriverManagement = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       {isSuperAdmin && <OwnerSelector systemType="milkTruck" />}
-      
+
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">Driver Management</h1>
         <Button
@@ -187,7 +190,7 @@ const DriverManagement = () => {
               required
               placeholder="Enter password"
             />
-            
+
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Assigned Vehicles
@@ -221,6 +224,70 @@ const DriverManagement = () => {
         </Card>
       )}
 
+      {/* Driver Detail Modal */}
+      {viewDriver && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] flex flex-col overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b bg-gradient-to-r from-green-50 to-blue-50">
+              <div className="flex items-center gap-3">
+                {viewDriver.profileImage ? (
+                  <img src={getImageUrl(viewDriver.profileImage)} alt={viewDriver.name}
+                    className="w-12 h-12 rounded-full object-cover border-2 border-white shadow" />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-xl font-bold">
+                    {viewDriver.name?.charAt(0)}
+                  </div>
+                )}
+                <div>
+                  <h2 className="font-bold text-lg text-gray-800">{viewDriver.name}</h2>
+                  <p className="text-sm text-gray-500">📞 {viewDriver.phoneNumber} &nbsp;•&nbsp; 🪪 {viewDriver.licenseNumber || 'No License'}</p>
+                </div>
+              </div>
+              <button onClick={() => setViewDriver(null)} className="text-gray-400 hover:text-gray-700 text-2xl">×</button>
+            </div>
+
+            {/* Body */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-5">
+              {/* Trip Stats */}
+              {(() => {
+                const stats = getDriverTripStats(viewDriver._id || viewDriver.id);
+                return (
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="bg-blue-50 rounded-xl p-3 text-center">
+                      <p className="text-2xl font-bold text-blue-700">{stats.total}</p>
+                      <p className="text-xs text-gray-500 mt-1">Total Trips</p>
+                    </div>
+                    <div className="bg-green-50 rounded-xl p-3 text-center">
+                      <p className="text-2xl font-bold text-green-700">{stats.completed}</p>
+                      <p className="text-xs text-gray-500 mt-1">Completed</p>
+                    </div>
+                    <div className="bg-orange-50 rounded-xl p-3 text-center">
+                      <p className="text-2xl font-bold text-orange-600">{stats.active}</p>
+                      <p className="text-xs text-gray-500 mt-1">Active</p>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* KYC Documents */}
+              <div>
+                <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">📄 KYC Documents</h3>
+                <UserDocumentsSection user={viewDriver} />
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t bg-gray-50 flex justify-end gap-2">
+              <Button variant="primary" className="text-sm" onClick={() => { navigate(`/milk-truck/owner/drivers/${viewDriver._id || viewDriver.id}/trips`); setViewDriver(null); }}>
+                View Trips
+              </Button>
+              <Button variant="secondary" className="text-sm" onClick={() => { handleEdit(viewDriver); setViewDriver(null); }}>Edit</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Card title="Driver List">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -243,55 +310,54 @@ const DriverManagement = () => {
                 </tr>
               ) : (
                 drivers.map((driver) => {
-                  const assignedVehicles = Array.isArray(vehicles) ? vehicles.filter(v => 
+                  const assignedVehicles = Array.isArray(vehicles) ? vehicles.filter(v =>
                     driver.assignedVehicles?.includes(v._id || v.id)
                   ) : [];
                   const tripStats = getDriverTripStats(driver._id || driver.id);
                   return (
                     <tr key={driver._id || driver.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 text-sm text-gray-900 font-medium">{driver.name}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">{driver.phoneNumber || 'N/A'}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">{driver.licenseNumber}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{tripStats.total}</span>
-                        <span className="text-xs text-gray-500">
-                          ({tripStats.completed} completed, {tripStats.active} active)
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-900">
-                      {assignedVehicles.length > 0
-                        ? assignedVehicles.map(v => v.registrationNumber).join(', ')
-                        : 'None'}
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      <div className="flex gap-2">
-                        <Button
-                          variant="primary"
-                          onClick={() => handleViewTrips(driver._id || driver.id)}
-                          className="text-xs px-2 py-1"
-                        >
-                          View Trips
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          onClick={() => handleEdit(driver)}
-                          className="text-xs px-2 py-1"
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="danger"
-                          onClick={() => handleDelete(driver._id || driver.id)}
-                          className="text-xs px-2 py-1"
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                );
+                      <td className="px-4 py-3 text-sm text-gray-900 font-medium">
+                        <div className="flex items-center gap-2">
+                          {driver.profileImage ? (
+                            <img src={getImageUrl(driver.profileImage)} alt={driver.name}
+                              className="w-8 h-8 rounded-full object-cover border border-gray-200 cursor-pointer hover:ring-2 hover:ring-blue-300"
+                              onClick={() => setViewDriver(driver)} />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-xs cursor-pointer"
+                              onClick={() => setViewDriver(driver)}>
+                              {driver.name?.charAt(0)}
+                            </div>
+                          )}
+                          {driver.name}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">{driver.phoneNumber || 'N/A'}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900">{driver.licenseNumber}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{tripStats.total}</span>
+                          <span className="text-xs text-gray-500">
+                            ({tripStats.completed} completed, {tripStats.active} active)
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {assignedVehicles.length > 0
+                          ? assignedVehicles.map(v => v.registrationNumber).join(', ')
+                          : 'None'}
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        <div className="flex gap-2 flex-wrap">
+                          <Button variant="secondary" onClick={() => setViewDriver(driver)} className="text-xs px-2 py-1">
+                            👁 Info
+                          </Button>
+                          <Button variant="primary" onClick={() => handleViewTrips(driver._id || driver.id)} className="text-xs px-2 py-1">Trips</Button>
+                          <Button variant="secondary" onClick={() => handleEdit(driver)} className="text-xs px-2 py-1">Edit</Button>
+                          <Button variant="danger" onClick={() => handleDelete(driver._id || driver.id)} className="text-xs px-2 py-1">Delete</Button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
                 })
               )}
             </tbody>

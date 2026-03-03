@@ -5,6 +5,8 @@ import Button from '../../../components/common/Button';
 import Input from '../../../components/common/Input';
 import Modal from '../../../components/common/Modal';
 import axios from 'axios';
+import { TripImageGallery } from '../../../components/common/DocViewer';
+import TripPathMap from '../../../components/Map/TripPathMap';
 
 const TripManagement = () => {
     const { tripId } = useParams();
@@ -812,6 +814,31 @@ const TripManagement = () => {
                                 </div>
                             </div>
                         )}
+
+                        {/* Route Map */}
+                        {selectedTrip.locationHistory && selectedTrip.locationHistory.length >= 2 && (
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                                <h3 className="font-semibold text-gray-800 mb-3">📍 Trip Route Map</h3>
+                                <TripPathMap
+                                    coordinates={selectedTrip.locationHistory}
+                                    height={280}
+                                    showFitBounds={true}
+                                    isLive={['in_transit', 'loading'].includes(selectedTrip.status)}
+                                    driverName={selectedTrip.driverId?.name || 'Driver'}
+                                />
+                            </div>
+                        )}
+
+                        {/* Trip Images from Deliveries */}
+                        {(() => {
+                            const imgs = [];
+                            (selectedTrip.deliveryEntries || []).forEach((entry, i) => {
+                                const loc = entry.deliveryPointId?.name || entry.notes || `Stop ${i + 1}`;
+                                if (entry.actualDelivery?.signature)
+                                    imgs.push({ label: `${loc} – Signature`, url: entry.actualDelivery.signature });
+                            });
+                            return imgs.length > 0 ? <TripImageGallery images={imgs} title="Delivery Proof" /> : null;
+                        })()}
 
                         {/* Trip Expenses */}
                         {selectedTrip.summary?.expenses && (

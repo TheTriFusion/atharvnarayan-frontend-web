@@ -13,6 +13,7 @@ const Sidebar = () => {
     { path: '/superadmin/dashboard', labelKey: 'superAdmin.title', section: 'superadmin' },
     { path: '/superadmin/owners', labelKey: 'superAdmin.ownerManagement', section: 'superadmin' },
     { path: '/superadmin/trips-map', labelKey: 'superAdmin.tripsWithMap', section: 'superadmin' },
+    { path: '/superadmin/documents', label: 'Documents', section: 'superadmin' },
     { path: '/cattle-feed/owner/dashboard', labelKey: 'cattleFeed.dashboard', section: 'cattleFeed' },
     { path: '/cattle-feed/owner/inventory', labelKey: 'cattleFeed.inventory', section: 'cattleFeed' },
     { path: '/cattle-feed/owner/sales', labelKey: 'cattleFeed.sales', section: 'cattleFeed' },
@@ -120,7 +121,7 @@ const Sidebar = () => {
                     : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                     }`}
                 >
-                  {t(item.labelKey)}
+                  {item.label || t(item.labelKey)}
                 </Link>
               ))}
             </div>
