@@ -13,17 +13,17 @@ L.Icon.Default.mergeOptions({
 
 // Custom marker icons
 const startIcon = new L.Icon({
-    iconUrl: 'data:image/svg+xml;base64,' + btoa(`<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='#10B981' stroke='white' stroke-width='2'/><text x='16' y='21' text-anchor='middle' fill='white' font-size='14' font-weight='bold'>S</text></svg>`),
+    iconUrl: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='#10B981' stroke='white' stroke-width='2'/><text x='16' y='21' text-anchor='middle' fill='white' font-size='14' font-weight='bold'>S</text></svg>`),
     iconSize: [32, 32], iconAnchor: [16, 16],
 });
 
 const endIcon = new L.Icon({
-    iconUrl: 'data:image/svg+xml;base64,' + btoa(`<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='#EF4444' stroke='white' stroke-width='2'/><text x='16' y='21' text-anchor='middle' fill='white' font-size='14' font-weight='bold'>E</text></svg>`),
+    iconUrl: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='#EF4444' stroke='white' stroke-width='2'/><text x='16' y='21' text-anchor='middle' fill='white' font-size='14' font-weight='bold'>E</text></svg>`),
     iconSize: [32, 32], iconAnchor: [16, 16],
 });
 
 const driverIcon = new L.Icon({
-    iconUrl: 'data:image/svg+xml;base64,' + btoa(`<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'><circle cx='18' cy='18' r='16' fill='#3B82F6' stroke='white' stroke-width='2.5'/><text x='18' y='23' text-anchor='middle' fill='white' font-size='16'>🚛</text></svg>`),
+    iconUrl: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'><circle cx='18' cy='18' r='16' fill='#3B82F6' stroke='white' stroke-width='2.5'/><text x='18' y='23' text-anchor='middle' fill='white' font-size='16'>🚛</text></svg>`),
     iconSize: [36, 36], iconAnchor: [18, 18],
 });
 

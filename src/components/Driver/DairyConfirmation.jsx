@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getMilkTruckBMCs, updateMilkTruckTrip } from '../../utils/storage';
+import { getMilkTruckBMCs, updateMilkTruckTrip, addMilkTruckDairyConfirmation } from '../../utils/storage';
 import Input from '../common/Input';
 import Button from '../common/Button';
 import Card from '../common/Card';
@@ -7,6 +7,7 @@ import Card from '../common/Card';
 const DairyConfirmation = ({ trip, onConfirm }) => {
   const [bmcs, setBMCs] = useState([]);
   const [editableBmcData, setEditableBmcData] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     getMilkTruckBMCs().then(data => setBMCs(Array.isArray(data) ? data : []));
@@ -144,6 +145,11 @@ const DairyConfirmation = ({ trip, onConfirm }) => {
         snf: finalDairyData.averageSnfContent - avgSnf,
       };
 
+      if (!imageFile) {
+        setError('Please upload a dairy confirmation slip image before submitting.');
+        return;
+      }
+
       // Build BMC entries - PRESERVE original collectionData, save edits to dairyVerifiedData
       const preservedBmcEntries = editableBmcData.map(entry => {
         // Find the original entry to preserve other fields
@@ -218,7 +224,13 @@ const DairyConfirmation = ({ trip, onConfirm }) => {
         status: cleanTrip.status
       });
 
-      const result = await updateMilkTruckTrip(tripId, cleanTrip);
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(cleanTrip));
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
+
+      const result = await addMilkTruckDairyConfirmation(tripId, formData);
 
       if (!result) {
         throw new Error('Failed to save trip data - no response from server');
@@ -532,6 +544,21 @@ const DairyConfirmation = ({ trip, onConfirm }) => {
                 {error}
               </div>
             )}
+
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Dairy Confirmation Slip Image *
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  setImageFile(e.target.files[0] || null);
+                  setError('');
+                }}
+                className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+            </div>
           </form>
         )}
 

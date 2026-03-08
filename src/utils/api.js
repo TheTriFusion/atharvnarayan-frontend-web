@@ -283,6 +283,7 @@ export const milkTruckAPI = {
   deleteTrip: (id) => apiRequest(`/milk-truck/trips/${id}`, { method: 'DELETE' }),
   addBMCEntry: (id, data) => apiRequest(`/milk-truck/trips/${id}/bmc-entry`, { method: 'POST', body: data }),
   getBMCEntry: (tripId, bmcId) => apiRequest(`/milk-truck/trips/${tripId}/bmc-entry/${bmcId}`),
+  confirmDairy: (id, data) => apiRequest(`/milk-truck/trips/${id}/dairy-confirmation`, { method: 'POST', body: data }),
 
 
   // Pricing
@@ -416,9 +417,9 @@ export const documentsAPI = {
 // GPS / Fleet Tracking API
 export const gpsAPI = {
   updateUserLocation: (latitude, longitude) =>
-    apiRequest('/gps/location', { method: 'POST', body: { latitude, longitude } }),
+    apiRequest('/gps/user-location', { method: 'PUT', body: { latitude, longitude } }),
   getFleetStatus: (ownerId = null) => {
-    const url = ownerId ? `/gps/fleet?ownerId=${ownerId}` : '/gps/fleet';
+    const url = ownerId ? `/gps/fleet-status?ownerId=${ownerId}` : '/gps/fleet-status';
     return apiRequest(url);
   },
 };

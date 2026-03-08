@@ -928,6 +928,16 @@ export const addBMCCollectionEntry = async (tripId, data) => {
   }
 };
 
+export const addMilkTruckDairyConfirmation = async (tripId, data) => {
+  try {
+    const response = await milkTruckAPI.confirmDairy(tripId, data);
+    return response.success ? response.data : null;
+  } catch (error) {
+    console.error('Error confirming dairy:', error);
+    throw error;
+  }
+};
+
 export const getMilkTruckTrip = async (id) => {
   // Validate ID format (MongoDB ObjectId is 24 hex characters)
   if (!id || typeof id !== 'string' || !id.match(/^[0-9a-fA-F]{24}$/)) {

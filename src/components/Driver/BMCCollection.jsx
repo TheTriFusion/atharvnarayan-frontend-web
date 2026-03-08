@@ -20,6 +20,7 @@ const BMCCollection = ({ trip, route, onComplete }) => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [tripData, setTripData] = useState(trip);
+  const [imageFile, setImageFile] = useState(null);
 
   // Refresh trip data
   useEffect(() => {
@@ -75,6 +76,7 @@ const BMCCollection = ({ trip, route, onComplete }) => {
     } else {
       setFormData({ milkQuantity: '', fatContent: '', snfContent: '' });
     }
+    setImageFile(null);
   };
 
   const handleSubmit = async (e) => {
@@ -90,15 +92,27 @@ const BMCCollection = ({ trip, route, onComplete }) => {
       return;
     }
 
-    const collectionEntry = {
+    if (!imageFile) {
+      setError('Please upload a photo of the BMC collection receipt or milk measurement.');
+      return;
+    }
+
+    const collectionDataFields = {
       bmcId: selectedBMCId,
       milkQuantity: parseFloat(formData.milkQuantity),
       fatContent: parseFloat(formData.fatContent),
       snfContent: parseFloat(formData.snfContent),
     };
 
+    const formDataPayload = new FormData();
+    formDataPayload.append('bmcId', collectionDataFields.bmcId);
+    formDataPayload.append('milkQuantity', collectionDataFields.milkQuantity);
+    formDataPayload.append('fatContent', collectionDataFields.fatContent);
+    formDataPayload.append('snfContent', collectionDataFields.snfContent);
+    formDataPayload.append('image', imageFile);
+
     try {
-      const updatedTrip = await addBMCCollectionEntry(trip.id || trip._id, collectionEntry);
+      const updatedTrip = await addBMCCollectionEntry(trip.id || trip._id, formDataPayload);
 
       if (updatedTrip) {
         setTripData(updatedTrip);
@@ -106,12 +120,13 @@ const BMCCollection = ({ trip, route, onComplete }) => {
         setError('');
 
         // Send notification to owner
-        sendNotificationToOwner(routeBMCs.find(b => (b.id || b._id) === selectedBMCId)?.name, collectionEntry);
+        sendNotificationToOwner(routeBMCs.find(b => (b.id || b._id) === selectedBMCId)?.name, collectionDataFields);
 
         // Auto-clear selection after delay
         setTimeout(() => {
           setSelectedBMCId('');
           setFormData({ milkQuantity: '', fatContent: '', snfContent: '' });
+          setImageFile(null);
           setSuccessMessage('');
         }, 1500);
       }
@@ -269,6 +284,21 @@ const BMCCollection = ({ trip, route, onComplete }) => {
                 min="0"
                 max="100"
                 step="0.01"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                BMC Collection Photo (Slips/Meter) *
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  setImageFile(e.target.files[0] || null);
+                  setError('');
+                }}
+                className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-300 rounded p-2"
               />
             </div>
 

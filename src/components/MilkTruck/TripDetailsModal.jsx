@@ -122,8 +122,8 @@ const TripDetailsModal = ({ trip, onClose, onUpdate, bmcs = [], routes = [], veh
                     <button
                         onClick={() => setActiveTab('details')}
                         className={`px-6 py-3 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'details'
-                                ? 'border-blue-500 text-blue-700 bg-blue-50'
-                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                            ? 'border-blue-500 text-blue-700 bg-blue-50'
+                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                             }`}
                     >
                         📊 Trip Details
@@ -132,8 +132,8 @@ const TripDetailsModal = ({ trip, onClose, onUpdate, bmcs = [], routes = [], veh
                         <button
                             onClick={() => setActiveTab('replay')}
                             className={`px-6 py-3 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'replay'
-                                    ? 'border-purple-500 text-purple-700 bg-purple-50'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                                ? 'border-purple-500 text-purple-700 bg-purple-50'
+                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                                 }`}
                         >
                             🎬 Trip Replay
@@ -427,8 +427,11 @@ const TripDetailsModal = ({ trip, onClose, onUpdate, bmcs = [], routes = [], veh
                                     if (entry.dairyVerifiedData?.image)
                                         imgs.push({ label: `${bmcName} – Dairy Verification`, url: entry.dairyVerifiedData.image });
                                 });
+                                if (trip.dairyConfirmation?.image) {
+                                    imgs.push({ label: 'Final Dairy Confirmation Slip', url: trip.dairyConfirmation.image });
+                                }
                                 return imgs.length > 0 ? (
-                                    <TripImageGallery images={imgs} title="BMC & Dairy Images" />
+                                    <TripImageGallery images={imgs} title="Trip Images & Slips" />
                                 ) : null;
                             })()}
 
