@@ -1,6 +1,6 @@
 // API utility functions for making requests to backend
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.thetrifusion.in/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.thetrifusion.in';
 
 // Request cache to prevent duplicate calls
 const requestCache = new Map();
@@ -49,7 +49,11 @@ const isLoginPage = () => {
 // Generic API request function with request deduplication
 const apiRequest = async (endpoint, options = {}) => {
   const token = getToken();
-  const url = `${API_BASE_URL}${endpoint}`;
+
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const isApiInBase = API_BASE_URL.endsWith('/api');
+  const pathPrefix = isApiInBase ? '' : '/api';
+  const url = `${API_BASE_URL}${pathPrefix}${cleanEndpoint}`;
 
   const isFormData = options.body instanceof FormData;
 
